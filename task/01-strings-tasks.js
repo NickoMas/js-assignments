@@ -225,10 +225,23 @@ function getRectangleString(width, height) {
  *   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(str) {
-    throw new Error('Not implemented');
-}
-
+ function encodeToRot13(str) {
+ 	 return str.split(' ')
+         .map((a)=>{
+           a = a.split('')
+                .map((b)=>{
+                  if(b === '!' || b === '?') return b;
+                  if(b.charCodeAt() < 78 && b.charCodeAt() >= 65) {
+                    return b = String.fromCharCode(b.charCodeAt()+13)}
+                  if(b.charCodeAt() >= 78 && b.charCodeAt() < 90) {
+                    return b = String.fromCharCode(b.charCodeAt()-13)}
+                  if(b.charCodeAt() >= 97 && b.charCodeAt() < 110) {
+  				   return b = String.fromCharCode(b.charCodeAt()+13)}
+                    else return b = String.fromCharCode(b.charCodeAt()-13);
+                  }).join('');
+           return a;
+         }).join(' ');
+ }
 /**
  * Returns true if the value is string; otherwise false.
  * @param {string} value
@@ -242,9 +255,10 @@ function encodeToRot13(str) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(value) {
-    throw new Error('Not implemented');
-}
+ function isString(value) {
+     if (value instanceof String || typeof value === 'string') return true
+     else return false
+ }
 
 
 /**
@@ -271,9 +285,45 @@ function isString(value) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(value) {
-    throw new Error('Not implemented');
-}
+ function getCardId(value) {
+     const obj = {
+ 		'A':0,
+        '2':1,
+     	'3':2,
+ 		'4':3,
+ 		'5':4,
+ 		'6':5,
+ 		'7':6,
+ 		'8':7,
+ 		'9':8,
+ 		'10':9,
+ 		'J':10,
+ 		'Q':11,
+ 		'K':12,
+     }
+    if(value.length === 3) {
+      switch (value[2]){
+        case '♣': return 9;
+ 		break;
+        case '♦': return 9+13;
+         break;
+        case '♥': return 9+26;
+ 		break;
+        case '♠': return 9+39;
+         break;
+      }
+    }
+    switch (value[1]) {
+        case '♣': return obj[value[0]];
+ 		break;
+        case '♦': return obj[value[0]]+13;
+         break;
+        case '♥': return obj[value[0]]+26;
+ 		break;
+        case '♠': return obj[value[0]]+39;
+         break;
+    }
+ }
 
 
 module.exports = {
